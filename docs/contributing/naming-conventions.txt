@@ -1,0 +1,6 @@
+Plugin Name -- Pods REST API
+Text domain -- pods-rest-api
+Function prefix -- pods_rest_api
+Class prefix -- Pods_REST_API
+Root namespace -- n/a
+Hook Prefix -- pods_rest_api
