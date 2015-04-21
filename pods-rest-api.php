@@ -110,4 +110,6 @@ function pods_rest_api_maybe_load() {
 	include_once( dirname( __FILE__ ) . '/classes/class-pods-rest-api.php' );
 	include_once( dirname( __FILE__ ) . '/classes/class-pods-rest-api-controller.php' );
 
+	new Pods_REST_API();
+
 }
