@@ -75,7 +75,7 @@ install_db() {
 
 
 install_pods() {
-    git clone https://github.com/pods-framework/ $WP_CORE_DIR/wp-content/plugins/pods
+    git clone https://github.com/pods-framework/pods $WP_CORE_DIR/wp-content/plugins/pods
     cd $WP_CORE_DIR/wp-content/plugins/pods
     git checkout 2.x
 
