@@ -11,6 +11,7 @@ if ( ! defined( 'PODS_TEST_PLUGIN_DIR' ) ) {
 	define('PODS_TEST_PLUGIN_DIR', $pods_dir );
 }
 
+//require $pods_dir . '/tests/includes/testcase.php';
 
 class Pods_REST_API_Tests extends WP_UnitTestCase {
 
@@ -21,7 +22,8 @@ class Pods_REST_API_Tests extends WP_UnitTestCase {
 	 */
 	function setUp() {
 		parent::setUp();
-		//$this->pods_test_case = new Pods_Unit_Tests\Pods_UnitTestCase();
+		//$this->pods_test_case = $pods_test_case = new Pods_Unit_Tests\Pods_UnitTestCase();
+
 		activate_plugin( 'pods-rest-api/pods-rest-api.php' );
 		activate_plugin( 'pods/init.php' );
 		activate_plugin( 'json-rest-api/plugin.php' );
