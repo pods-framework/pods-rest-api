@@ -27,6 +27,15 @@ class Pods_REST_API_Tests extends WP_UnitTestCase {
 		activate_plugin( 'pods-rest-api/pods-rest-api.php' );
 		activate_plugin( 'pods/init.php' );
 		activate_plugin( 'json-rest-api/plugin.php' );
+
+		$pod_name = 'frogs';
+		$params = array(
+			'storage' 	=> 'meta',
+			'type' 		=> 'post_type',
+			'name' 		=> $pod_name,
+		);
+
+		$this->$pod_id = pods_api()->save_pod( $params );
 	}
 
 	/**
@@ -53,4 +62,31 @@ class Pods_REST_API_Tests extends WP_UnitTestCase {
 	public function test_core_api_active() {
 		$this->assertTrue( is_plugin_active( 'json-rest-api/plugin.php' ) );
 	}
+
+	/**
+	 * Test that default Pods Routes exist
+	 *
+	 * @since 0.0.1
+	 *
+	 * @covers Pods_REST_API::default_routes
+	 */
+	public function test_pods_routes_exists() {
+			$routes = $this->server->get_routes();
+			$this->assertArrayHasKey( '/pods/pods/frogs', $routes );
+			$this->assertArrayHasKey( '/pods/pods/frogs(?P<id>[\d]+)', $routes );
+
+	}
+	/**
+	 * Test that default PodsAPI Routes exist
+	 *
+	 * @since 0.0.1
+	 *
+	 * @covers Pods_REST_API::default_routes
+	 */
+	public function test_podsapi_routes_exists() {
+		$routes = $this->server->get_routes();
+		$this->assertArrayHasKey( '/pods/podsapi/', $routes );
+
+	}
+
 }
