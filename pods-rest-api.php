@@ -8,6 +8,8 @@ Author: Pods Framework Team
 Author URI: http://pods.io/about/
 Text Domain: pods-rest-api
 Domain Path: /languages/
+GitHub Plugin URI: https://github.com/pods-rest-api/pods
+GitHub Branch: master
 
 Copyright 2015  Pods Foundation, Inc  (email : contact@podsfoundation.org)
 
