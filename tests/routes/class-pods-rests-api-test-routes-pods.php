@@ -291,4 +291,31 @@ class Pods_REST_API_Tests_Routes_Pods extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * Test "pods_rest_api_default_query" filter
+	 *
+	 * @since 0.0.1
+	 */
+	public function test_filter_default_query() {
+		add_filter( 'pods_rest_api_default_query',function( $query ) {
+			$query[ 'limit' ] = 1;
+
+			return $query;
+		});
+
+		$request = new WP_JSON_Request( 'GET', '/pods/pods/frogs' );
+		$request->set_query_params( array(
+			'limit' => 7
+		) );
+		$response = $this->server->dispatch( $request );
+
+		$this->assertNotInstanceOf( 'WP_Error', $response );
+		$response = json_ensure_response( $response );
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$this->assertSame( 1, count( $data ) );
+
+	}
+
 }
