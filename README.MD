@@ -1,7 +1,7 @@
 Pods REST API
 ==========
 
-Deploys Pods configuration to a remote site. Copies Pods setup, Pods Template, Pods Pages and Pods Helpers via the WordPress REST API.
+A new Pods add-on for extending the WordPress REST API. Adds default routes and provides tools for making your own.
 
 <strong>Doesn't Work Yet</strong>
 
