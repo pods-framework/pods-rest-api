@@ -154,10 +154,9 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 		$request->set_body_params( $params );
 
 		$response = $this->server->dispatch( $request );
-
 		$this->assertNotInstanceOf( 'WP_Error', $response );
-		$response = json_ensure_response( $response );
 		$this->assertEquals( 200, $response->get_status() );
+
 		$data = $response->get_data();
 
 		$this->assertArrayHasKey( 'id', $data );
@@ -167,20 +166,97 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 			'name' => 'lizards',
 			'id' => $data[ 'id' ]
 		);
-		$exists Pods_API()->pod_exists()
+		$exists = Pods_API()->pod_exists( $params );
+		$this->assertTrue( $exists );
 
 	}
 
 	/**
-	 * Test that we can update a Pod, including adding fields.
+	 * Test that we can update a Pod, specifically change its name
 	 *
 	 * @since 0.0.1
 	 *
 	 * @covers Pods_JSON_API_Pods_API::save_pod
 	 */
-	public function test_save_pod() {
+	public function test_save_pod_change_pod_name() {
+		$request = new WP_JSON_Request( 'POST', '/pods/pods-api/frogs' );
+		$request->add_header( 'content-type', 'application/x-www-form-urlencoded' );
+		$params = array(
+			'name' => 'dragons',
+		);
+
+		$request->set_body_params( $params );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertNotInstanceOf( 'WP_Error', $response );
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertNotEquals( 0, intval( $data[ 'id' ] ) );
+
+		$params = array(
+			'name' => 'dragons',
+			'id' => $data[ 'id' ]
+		);
+		$exists = Pods_API()->pod_exists( $params );
+
+		$this->assertTrue( $exists );
+
+		$params = array(
+			'name' => 'frogs',
+		);
+		$exists = Pods_API()->pod_exists( $params );
+
+		$this->assertFalse( $exists );
+
+		$fields = pods( 'dragons' )->fields();
+
+		$fields = wp_list_pluck( $fields, 'name' );
+
+		$this->assertArrayHasKey( 'text_two', $fields );
 
 	}
+
+	/**
+	 * Test that we can update a Pod, specifically that we can add a new field
+	 *
+	 * @since 0.0.1
+	 *
+	 * @covers Pods_JSON_API_Pods_API::save_pod
+	 */
+	public function test_save_pod_add_field() {
+		$request = new WP_JSON_Request( 'POST', '/pods/pods-api/frogs' );
+		$request->add_header( 'content-type', 'application/x-www-form-urlencoded' );
+		$params = array(
+			'fields' => array(
+				array(
+					'name' 		=> 'text_two',
+					'type' 		=> 'text',
+				)
+
+			)
+		);
+
+		$request->set_body_params( $params );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertNotInstanceOf( 'WP_Error', $response );
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertNotEquals( 0, intval( $data[ 'id' ] ) );
+
+		$fields = pods( 'frogs' )->fields();
+
+		$fields = wp_list_pluck( $fields, 'name' );
+
+		$this->assertArrayHasKey( 'text_two', $fields );
+
+	}
+
 
 	/**
 	 * Test that we can delete a Pod
@@ -190,6 +266,21 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 * @covers Pods_JSON_API_Pods_API::delete_pod
 	 */
 	public function test_delete_pod() {
+		$request = new WP_JSON_Request( 'DELETE', '/pods/pods-api/frogs/delete' );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertNotInstanceOf( 'WP_Error', $response );
+		$this->assertEquals( 200, $response->get_status() );
+		$data = $response->get_data();
+		$this->assertArrayHasKey( 'id', $data );
+
+		$params = array(
+			'name' => 'frogs',
+			'id' => $data[ 'id' ]
+		);
+		$exists = Pods_API()->pod_exists( $params );
+
+		$this->assertFalse( $exists );
 
 	}
 
@@ -201,7 +292,35 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 * @covers Pods_JSON_API_Pods_API::duplicate_pod
 	 */
 	public function test_duplicate_pod() {
+		$request = new WP_JSON_Request( 'DELETE', '/pods/pods-api/frogs/duplicate' );
+		$request->add_header( 'content-type', 'application/x-www-form-urlencoded' );
+		$params = array(
+			'name' => 'dinosaurs'
+		);
 
+		$request->set_body_params( $params );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertNotInstanceOf( 'WP_Error', $response );
+		$this->assertEquals( 200, $response->get_status() );
+		$data = $response->get_data();
+		$this->assertArrayHasKey( 'id', $data );
+
+		$params = array(
+			'name' => 'frogs',
+			'id' => $this->pod_one_id,
+		);
+		$exists = Pods_API()->pod_exists( $params );
+
+		$this->assertTrue( $exists );
+
+		$params = array(
+			'name' => 'dinosaurs',
+			'id' => $data[ 'id' ]
+		);
+		$exists = Pods_API()->pod_exists( $params );
+
+		$this->assertTrue( $exists );
 	}
 
 	/**
@@ -214,6 +333,23 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 * @covers Pods_JSON_API_Pods_API::reset_pod
 	 */
 	public function test_reset_pod() {
+		$data = array(
+			'name' => 'foo',
+			'test_text' => 'bar'
+		);
+		$frogs = pods( 'frogs' );
+		$item_id = $frogs->save( $data );
+		$request = new WP_JSON_Request( 'DELETE', '/pods/pods-api/frogs/reset' );
+		$response = $this->server->dispatch( $request );
+		$this->assertNotInstanceOf( 'WP_Error', $response );
+		$this->assertEquals( 200, $response->get_status() );
+		$data = $response->get_data();
+		$this->assertArrayHasKey( 'id', $data );
+
+		$frogs = pods( 'frogs', $item_id );
+
+		$this->assertNotEquals( $frogs->id, $item_id );
+		$this->assertEquals( 0, $frogs->total() );
 
 	}
 }
