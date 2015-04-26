@@ -3,7 +3,7 @@
 Plugin Name: Pods REST API
 Plugin URI: http://pods.io/
 Description: Extends the WordPress REST API for Pods
-Version: 0.0.1
+Version: 0.0.2-a1
 Author: Pods Framework Team
 Author URI: http://pods.io/about/
 Text Domain: pods-rest-api
@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @since 0.0.1
  */
-define( 'PODS_REST_API_VERSION', '0.0.1' );
+define( 'PODS_REST_API_VERSION', '0.0.2-a1' );
 
 /**
  * The minimum supported version of Pods
