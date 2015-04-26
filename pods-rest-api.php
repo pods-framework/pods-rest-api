@@ -8,6 +8,8 @@ Author: Pods Framework Team
 Author URI: http://pods.io/about/
 Text Domain: pods-rest-api
 Domain Path: /languages/
+GitHub Plugin URI: https://github.com/pods-rest-api/pods
+GitHub Branch: master
 
 Copyright 2015  Pods Foundation, Inc  (email : contact@podsfoundation.org)
 
@@ -109,6 +111,9 @@ function pods_rest_api_maybe_load() {
 
 	include_once( dirname( __FILE__ ) . '/classes/class-pods-rest-api.php' );
 	include_once( dirname( __FILE__ ) . '/classes/class-pods-rest-api-controller.php' );
+	include_once( dirname( __FILE__ ) . '/classes/class-pods-rest-api-response-controller.php' );
+	include_once( dirname( __FILE__ ) . '/classes/class-pods-api-request-params.php' );
+	include_once( dirname( __FILE__ ) . '/includes/functions.php' );
 
 	new Pods_REST_API();
 
