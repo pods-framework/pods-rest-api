@@ -8,7 +8,9 @@
  * @license   GPL-2.0+
  * @copyright 2015 Pods Framework
  */
-class Pods_REST_API_Response_Controller extends WP_JSON_Response {
+namespace pods_rest_api\infrastructure;
+
+class response_controller extends \WP_JSON_Response {
 	/**
 	 * Pod from result set
 	 *

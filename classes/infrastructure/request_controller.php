@@ -6,7 +6,10 @@
  * @license   GPL-2.0+
  * @copyright 2015 Pods Framework
  */
-abstract class Pods_REST_API_Controller {
+
+namespace pods_rest_api\infrastructure;
+
+abstract class request_controller {
 
 	/**
 	 * URL for this route
@@ -50,7 +53,7 @@ abstract class Pods_REST_API_Controller {
 			register_json_route( PODS_REST_API_BASE_URL, $url,
 				array(
 					array(
-						'methods'             => WP_JSON_Server::READABLE,
+						'methods'             => \WP_JSON_Server::READABLE,
 						'callback'            => array( $this, 'get_items' ),
 						'args'                => array(
 							'context' => array(
@@ -68,7 +71,7 @@ abstract class Pods_REST_API_Controller {
 			$url = trailingslashit( $this->route_url ) . $pod . '/(?P<id>[\d]+)';
 			register_json_route(  PODS_REST_API_BASE_URL, $url,
 				array(
-					'methods'         => WP_JSON_Server::READABLE,
+					'methods'         => \WP_JSON_Server::READABLE,
 					'callback'        => array( $this, 'get_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'            => array(
@@ -91,6 +94,7 @@ abstract class Pods_REST_API_Controller {
 	public function permissions_check() {
 		return true;
 	}
+
 	/**
 	 * Placeholder method!
 	 *
