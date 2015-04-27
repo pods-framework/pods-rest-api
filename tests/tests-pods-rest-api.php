@@ -68,7 +68,7 @@ class Pods_REST_API_Tests extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_REST_API::default_routes
+	 * @covers pods_rest_api\main::default_routes
 	 */
 	public function test_pods_routes_exists() {
 			$routes = $this->server->get_routes();
@@ -81,7 +81,7 @@ class Pods_REST_API_Tests extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_REST_API::default_routes
+	 * @covers pods_rest_api\main::default_routes
 	 */
 	public function test_podsapi_routes_exists() {
 		$routes = $this->server->get_routes();

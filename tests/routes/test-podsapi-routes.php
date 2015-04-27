@@ -85,7 +85,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::get_pods
+	 * @covers \pods_rest_api\routes\pods_api::get_pods
 	 */
 	public function test_get_pods() {
 		$request = new WP_JSON_Request( 'GET', '/pods/pods-api' );
@@ -117,7 +117,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::get_pod
+	 * @covers \pods_rest_api\routes\pods_api::get_pod
 	 */
 	public function test_get_pod() {
 		$request = new WP_JSON_Request( 'GET', '/pods/pods-api/frogs' );
@@ -140,7 +140,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::add_pod
+	 * @covers \pods_rest_api\routes\pods_api::add_pod
 	 */
 	public function test_add_pod() {
 		$request = new WP_JSON_Request( 'POST', '/pods/pods-api' );
@@ -176,7 +176,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::save_pod
+	 * @covers \pods_rest_api\routes\pods_api::save_pod
 	 */
 	public function test_save_pod_change_pod_name() {
 		$request = new WP_JSON_Request( 'POST', '/pods/pods-api/frogs' );
@@ -224,7 +224,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::save_pod
+	 * @covers \pods_rest_api\routes\pods_api::save_pod
 	 */
 	public function test_save_pod_add_field() {
 		$request = new WP_JSON_Request( 'POST', '/pods/pods-api/frogs' );
@@ -263,7 +263,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::delete_pod
+	 * @covers \pods_rest_api\routes\pods_api::delete_pod
 	 */
 	public function test_delete_pod() {
 		$request = new WP_JSON_Request( 'DELETE', '/pods/pods-api/frogs/delete' );
@@ -289,7 +289,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::duplicate_pod
+	 * @covers \pods_rest_api\routes\pods_api::duplicate_pod
 	 */
 	public function test_duplicate_pod() {
 		$request = new WP_JSON_Request( 'DELETE', '/pods/pods-api/frogs/duplicate' );
@@ -330,7 +330,7 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @covers Pods_JSON_API_Pods_API::reset_pod
+	 * @covers \pods_rest_api\routes\pods_api::reset_pod
 	 */
 	public function test_reset_pod() {
 		$data = array(
@@ -352,4 +352,5 @@ class Pods_REST_API_Tests_Routes_PodsAPI extends WP_UnitTestCase {
 		$this->assertEquals( 0, $frogs->total() );
 
 	}
+	
 }
