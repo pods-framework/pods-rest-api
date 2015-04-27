@@ -7,8 +7,12 @@
  * @copyright 2015 Josh Pollock
  */
 
-class Pods_REST_API_Route_Pods extends Pods_REST_API_Controller {
+namespace pods_rest_api\routes;
 
-	
+use pods_rest_api\infrastructure\request_controller;
+
+class pods_api extends request_controller {
+
+
 
 }

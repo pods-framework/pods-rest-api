@@ -7,7 +7,9 @@
  * @copyright 2015 Pods Framework
  */
 
-class Pods_REST_API_Request_Params {
+namespace pods_rest_api\infrastructure;
+
+class request_params {
 
 	/**
 	 * An array of substitutions we can use for queries.
