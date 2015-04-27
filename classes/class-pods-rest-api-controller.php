@@ -9,34 +9,6 @@
 abstract class Pods_REST_API_Controller {
 
 	/**
-	 * URL for this route
-	 *
-	 * NOTE: Relative to root URL for WordPress' REST API
-	 *
-	 * @since 0.0.1
-	 *
-	 * @access protected
-	 */
-	protected $route_url;
-
-
-	/**
-	 * Constructor for parent class.
-	 *
-	 * @param string $route Route name
-	 *
-	 * @since 0.0.1
-	 */
-	public function __construct( $route ) {
-		$this->route_url = $route;
-		$this->register_routes();
-		global $wp_json_server;
-
-		$this->wp_json_server = $wp_json_server;
-
-	}
-
-	/**
 	 * Automatically register the routes for this endpoint
 	 *
 	 * @todo all routes
@@ -44,45 +16,8 @@ abstract class Pods_REST_API_Controller {
 	 * @since 0.0.1
 	 */
 	public function register_routes() {
-		$pods = pods_api()->load_pods( array( 'key_names' => true ) );
-		foreach ( $pods as $pod => $data  ) {
-			$url = trailingslashit( $this->route_url ) . $pod;
-			register_json_route( PODS_REST_API_BASE_URL, $url,
-				array(
-					array(
-						'methods'             => WP_JSON_Server::READABLE,
-						'callback'            => array( $this, 'get_items' ),
-						'args'                => array(
-							'context' => array(
-								'default' => 'view',
-							),
-							'type'    => array(),
-							'page'    => array(),
-						),
-						'permission_callback' => array( $this, 'permissions_check' ),
-					),
-
-				)
-
-			);
-			$url = trailingslashit( $this->route_url ) . $pod . '/(?P<id>[\d]+)';
-			register_json_route(  PODS_REST_API_BASE_URL, $url,
-				array(
-					'methods'         => WP_JSON_Server::READABLE,
-					'callback'        => array( $this, 'get_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'            => array(
-						'context'          => array(
-							'default'      => 'view',
-						),
-					),
-				)
-			);
-		}
-
+		_doing_it_wrong( 'WP_JSON_Controller::register_routes', __( 'The register_routes() method must be overriden' ), 'WPAPI-2.0' );
 	}
-
-
 	/**
 	 * Placeholder method!
 	 *

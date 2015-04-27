@@ -70,6 +70,7 @@ if ( ! defined( 'PODS_REST_API_BASE_URL' ) ) {
  * Load the plugin if dependencies are met.
  */
 add_action( 'plugins_loaded', 'pods_rest_api_maybe_load' );
+
 function pods_rest_api_maybe_load() {
 	$fail = false;
 

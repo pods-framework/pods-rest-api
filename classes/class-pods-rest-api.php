@@ -10,7 +10,7 @@
 class Pods_REST_API {
 
 	public function __construct() {
-		add_action( 'wp_json_server_before_serve', array( $this, 'default_routes' ) );
+		add_action( 'wp_json_init', array( $this, 'default_routes' ) );
 	}
 
 	/**
@@ -26,8 +26,28 @@ class Pods_REST_API {
 			include_once( dirname( __FILE__ ) .'/routes/class-pods-rest-api-route-podsapi.php' );
 		}
 
-		new Pods_REST_API_Route_Pods( 'pods' );
-		//new Pods_REST_API_Route_PodsAPI( 'podsapi' );
+		/**
+		 * Register default JSON API routes
+		 */
+
+		$pods_config = pods_api()->load_pods( array( 'key_names' => true ) );
+
+		//todo creat a list of default_routes&filter to iterate on (PODs&PodsAPI )
+		foreach ( $pods_config as $pod => $config  ) {
+
+			// @todo if ( $config['type'] )  use different controller for pod, post-type, .... 
+			// @todo get class from default_routes  (see _add_extra_api_post_type_arguments)
+
+			$class = 'Pods_REST_API_Route_Pods';
+
+			if ( ! class_exists( $class ) ) {
+			// continue;
+			}
+
+			$controller = new $class( $pod );
+			$controller->register_routes();
+
+		}
 
 	}
 
