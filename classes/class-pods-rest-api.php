@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main Class for Pods REST API
  *
@@ -7,51 +6,49 @@
  * @license   GPL-2.0+
  * @copyright 2015 Pods Framework
  */
-class Pods_REST_API
-{
 
-    public function __construct()
-    {
-        add_action('wp_json_init', array($this, 'default_routes'));
-    }
+class Pods_REST_API {
 
-    /**
-     * Include the default routes
-     *
-     * @uses "wp_json_server_before_serve" action
-     *
-     * @since 0.0.1
-     */
-    public function default_routes()
-    {
-        if (PODS_REST_API_ENABLE_DEFAULT_ROUTES) {
-            include_once(dirname(__FILE__) . '/routes/class-pods-rest-api-route-pods.php');
-            include_once(dirname(__FILE__) . '/routes/class-pods-rest-api-route-podsapi.php');
-        }
+	public function __construct() {
+		add_action( 'wp_json_init', array( $this, 'default_routes' ) );
+	}
 
-        /**
-         * Register default JSON API routes
-         */
+	/**
+	 * Include the default routes
+	 *
+	 * @uses "wp_json_server_before_serve" action
+	 *
+	 * @since 0.0.1
+	 */
+	public function default_routes() {
+		if ( PODS_REST_API_ENABLE_DEFAULT_ROUTES ) {
+			include_once( dirname( __FILE__ ) .'/routes/class-pods-rest-api-route-pods.php' );
+			include_once( dirname( __FILE__ ) .'/routes/class-pods-rest-api-route-podsapi.php' );
+		}
 
-        $pods_config = pods_api()->load_pods(array('key_names' => true));
+		/**
+		 * Register default JSON API routes
+		 */
 
-        //todo creat a list of default_routes&filter to iterate on (PODs&PodsAPI )
-        foreach ($pods_config as $pod => $config) {
+		$pods_config = pods_api()->load_pods( array( 'key_names' => true ) );
 
-            // @todo if ( $config['type'] )  use different controller for pod, post-type, ....
-            // @todo get class from default_routes  (see _add_extra_api_post_type_arguments)
+		//todo creat a list of default_routes&filter to iterate on (PODs&PodsAPI )
+		foreach ( $pods_config as $pod => $config  ) {
 
-            $class = 'Pods_REST_API_Route_Pods';
+			// @todo if ( $config['type'] )  use different controller for pod, post-type, .... 
+			// @todo get class from default_routes  (see _add_extra_api_post_type_arguments)
 
-            if (!class_exists($class)) {
-                // continue;
-            }
+			$class = 'Pods_REST_API_Route_Pods';
 
-            $controller = new $class($pod);
-            $controller->register_routes();
+			if ( ! class_exists( $class ) ) {
+			// continue;
+			}
 
-        }
+			$controller = new $class( $pod );
+			$controller->register_routes();
 
-    }
+		}
+
+	}
 
 }

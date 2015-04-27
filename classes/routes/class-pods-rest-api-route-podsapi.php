@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Handles the Pods class endpoint and routes
  *
@@ -7,7 +6,7 @@
  * @license   GPL-2.0+
  * @copyright 2015 Josh Pollock
  */
-class Pods_REST_API_Route_PodsAPI extends Pods_REST_API_Controller
-{
+
+class Pods_REST_API_Route_PodsAPI extends Pods_REST_API_Controller {
 
 }
