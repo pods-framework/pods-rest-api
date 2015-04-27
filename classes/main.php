@@ -13,7 +13,7 @@ use pods_rest_api\routes\pods_api;
 class main {
 
 	public function __construct() {
-		add_action( 'wp_json_server_before_serve', array( $this, 'default_routes' ) );
+		add_action( 'wp_json_init', array( $this, 'default_routes' ) );
 	}
 
 	/**
