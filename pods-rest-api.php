@@ -56,15 +56,17 @@ if ( ! defined( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES' ) ) {
 	define( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES', true );
 }
 
-if ( ! defined( 'PODS_REST_API_BASE_URL' ) ) {
+if ( ! defined( 'PODS_REST_API_NAMESPACE_URL' ) ) {
 	/**
 	 * Sets the base URL for API.
 	 *
-	 * This is the first segment(s) after the base prefix for WP REST API. Default is "Pods", can be overridden in wp-config.php or anytime before plugins_loaded
+	 * The first URL segment after core prefix. Should be unique to your package/plugin.
+	 * Default is "pods", can be overridden in wp-config.php or anytime before plugins_loaded
+	 *  "-api" is appended for pods configuration api ( e.g. pods-api )
 	 *
 	 * @since 0.0.1
 	 */
-	define( 'PODS_REST_API_BASE_URL', 'pods' );
+	define( 'PODS_REST_API_NAMESPACE_URL', 'pods' );
 }
 
 /**

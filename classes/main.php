@@ -33,8 +33,8 @@ class main {
 
 			// maybe if ( $config['type'] )  use different controller for pod, post-type, ....
 
-			self::create_routes( $pod_names, PODS_REST_API_BASE_URL, '\pods_rest_api\routes\pods' );
-			self::create_routes( $pod_names, PODS_REST_API_BASE_URL . '-api', '\pods_rest_api\routes\pods_api' );
+			self::create_routes( $pod_names, PODS_REST_API_NAMESPACE_URL, '\pods_rest_api\routes\pods' );
+			self::create_routes( $pod_names, PODS_REST_API_NAMESPACE_URL . '-api', '\pods_rest_api\routes\pods_api' );
 		}
 
 	}
@@ -55,7 +55,7 @@ class main {
 		foreach ( $pod_names as $pod ) {
 			$routes[ $pod ] = array(
 				'name'             => $pod,
-				'route'             => $pod,
+				'route'            => $pod,
 				'controller_class' => $class_name,
 				'namespace'        => $namespace
 			);
