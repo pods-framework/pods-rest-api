@@ -13,21 +13,25 @@ use pods_rest_api\infrastructure\request_controller;
 
 class pods_api extends request_controller {
 
+	/**
+	 * Register routes and endpoints
+	 *
+	 * @since 0.0.2
+	 */
 	public function register_routes() {
-
 		register_rest_route( $this->config['namespace'], $this->config['base'],
 			array(
 				array(
-					'methods' => \WP_REST_Server::READABLE,
-					'callback' => array($this, 'get_items'),
-					'args' => array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_items' ),
+					'args'                => array(
 						'context' => array(
 							'default' => 'view',
 						),
-						'type' => array(),
-						'page' => array(),
+						'type'    => array(),
+						'page'    => array(),
 					),
-					'permission_callback' => array($this, 'permissions_check')
+					'permission_callback' => array( $this, 'permissions_check' )
 				)
 			)
 		);
@@ -39,14 +43,14 @@ class pods_api extends request_controller {
 	 *
 	 * @since 0.0.2
 	 *
-	 * @param \WP_JSON_Request $request Full data about the request.
+	 * @param \WP_REST_Request $request Full data about the request.
+	 *
 	 * @return mixed WP_Error or \pods_rest_api\infrastructure\response_controller
 	 */
 	public function get_items( $request ) {
 		return "Works:)";
 
 	}
-
 
 
 }

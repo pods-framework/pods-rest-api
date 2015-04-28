@@ -20,14 +20,14 @@ class main {
 	/**
 	 * Include the default routes
 	 *
-	 * @uses "wp_json_server_before_serve" action
+	 * @uses "rest_api_init" action
 	 *
 	 * @since 0.0.1
 	 */
 	public function default_routes() {
 		if ( PODS_REST_API_ENABLE_DEFAULT_ROUTES ) {
 			/**
-			 * Register default JSON API routes
+			 * Register default REST API routes
 			 */
 			self::create_routes( PODS_REST_API_BASE_URL, '\pods_rest_api\routes\pods' );
 			self::create_routes( PODS_REST_API_BASE_URL . '-api', '\pods_rest_api\routes\pods_api' );
@@ -38,8 +38,8 @@ class main {
 	/**
 	 * Create Routes
 	 *
-	 * @param string $base_url
-	 * @param string $class
+	 * @param string $namespace
+	 * @param string $class_name
 	 *
 	 * @since 0.0.2
 	 */

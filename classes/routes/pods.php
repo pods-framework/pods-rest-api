@@ -12,9 +12,12 @@ use pods_rest_api\infrastructure\request_controller;
 
 class pods extends request_controller {
 
+	/**
+	 * Register routes and endpoints
+	 *
+	 * @since 0.0.2
+	 */
 	public function register_routes() {
-
-
 		register_rest_route( $this->config['namespace'], $this->config['base'],
 			array(
 				array(
