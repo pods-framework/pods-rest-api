@@ -43,6 +43,7 @@ define( 'PODS_REST_API_VERSION', '0.0.2-a1' );
  * @since 0.0.1
  */
 define( 'PODS_REST_API_MIN_PODS_VERSION', '2.5.1.2' );
+define( 'PODS_REST_API_MIN_WP_REST_VERSION', '2.0-alpha' );
 
 if ( ! defined( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES' ) ) {
 	/**
@@ -78,8 +79,8 @@ function pods_rest_api_maybe_load() {
 		$fail[] = __( 'Pods REST API requires Pods.', 'pods-rest-api' );
 	}
 
-	if ( ! class_exists( 'WP_JSON_Posts_Controller' ) ) {
-		$fail[] = __( 'Pods REST API requires the core WordPress REST API be active.', 'pods-rest-api' );
+	if ( ! defined( 'REST_API_VERSION' ) ) {
+		$fail[] = __( 'Pods REST API requires the WP REST API.', 'pods-rest-api' );
 	}
 
 	if ( ! is_array( $fail ) ) {
@@ -91,13 +92,16 @@ function pods_rest_api_maybe_load() {
 			$fail[] = __( sprintf( 'Pods REST API requires PHP version %1s or later. Current version is %2s.', '5.3.0', PHP_VERSION ), 'pods-rest-api' );
 
 		}
-	}
 
+		if ( ! version_compare( REST_API_VERSION, PODS_REST_API_MIN_WP_REST_VERSION, '>=' ) ) {
+			$fail[] = __( 'Pods REST API requires the WP REST API >= %1s.', PODS_REST_API_MIN_WP_REST_VERSION, 'pods-rest-api' );
+		}
+	}
 
 
 	if ( is_array( $fail ) ) {
 
-		if (  is_admin() ) {
+		if ( is_admin() ) {
 			foreach ( $fail as $message ) {
 				echo sprintf( '<div id="message" class="error"><p>%s</p></div>',
 					$message
