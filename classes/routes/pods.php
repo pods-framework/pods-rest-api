@@ -18,7 +18,7 @@ class pods extends request_controller {
 	 * @since 0.0.2
 	 */
 	public function register_routes() {
-		register_rest_route( $this->config['namespace'], $this->config['base'],
+		register_rest_route( $this->config['namespace'], $this->config['route'],
 			array(
 				array(
 					'methods'             => \WP_REST_Server::READABLE,

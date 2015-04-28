@@ -55,7 +55,7 @@ class main {
 		foreach ( $pod_names as $pod ) {
 			$routes[ $pod ] = array(
 				'name'             => $pod,
-				'base'             => $pod,
+				'route'             => $pod,
 				'controller_class' => $class_name,
 				'namespace'        => $namespace
 			);
