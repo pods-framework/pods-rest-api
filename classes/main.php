@@ -29,8 +29,12 @@ class main {
 			/**
 			 * Register default REST API routes
 			 */
-			self::create_routes( PODS_REST_API_BASE_URL, '\pods_rest_api\routes\pods' );
-			self::create_routes( PODS_REST_API_BASE_URL . '-api', '\pods_rest_api\routes\pods_api' );
+			$pod_names = array_keys( pods_api()->load_pods( array( 'names' => true ) ) );
+
+			// maybe if ( $config['type'] )  use different controller for pod, post-type, ....
+
+			self::create_routes( $pod_names, PODS_REST_API_BASE_URL, '\pods_rest_api\routes\pods' );
+			self::create_routes( $pod_names, PODS_REST_API_BASE_URL . '-api', '\pods_rest_api\routes\pods_api' );
 		}
 
 	}
@@ -38,17 +42,17 @@ class main {
 	/**
 	 * Create Routes
 	 *
+	 * @param array $pod_names
+	 *
 	 * @param string $namespace
 	 * @param string $class_name
 	 *
 	 * @since 0.0.2
 	 */
-	public function create_routes( $namespace, $class_name ) {
-		$pods_config = pods_api()->load_pods( array( 'key_names' => true ) );
-		$routes      = array();
+	public function create_routes( $pod_names, $namespace, $class_name ) {
+		$routes = array();
 
-		foreach ( $pods_config as $pod => $config ) {
-			// maybe if ( $config['type'] )  use different controller for pod, post-type, ....
+		foreach ( $pod_names as $pod ) {
 			$routes[ $pod ] = array(
 				'name'             => $pod,
 				'base'             => $pod,
@@ -57,7 +61,7 @@ class main {
 			);
 		};
 
-		$routes = apply_filters( 'pods_rest_api_create_routes' . $namespace, $routes, $pods_config );
+		$routes = apply_filters( 'pods_rest_api_create_routes' . $namespace, $routes );
 
 		foreach ( $routes as $pod => $config ) {
 			$class = ! empty( $config['controller_class'] ) ? $config['controller_class'] : '\pods_rest_api\routes\pods';
