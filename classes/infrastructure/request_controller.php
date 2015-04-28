@@ -20,7 +20,7 @@ abstract class request_controller {
 	 *
 	 * @access protected
 	 */
-	protected $route_url;
+	protected $config;
 
 
 	/**
@@ -30,59 +30,17 @@ abstract class request_controller {
 	 *
 	 * @since 0.0.1
 	 */
-	public function __construct( $route ) {
-		$this->route_url = $route;
-		$this->register_routes();
-		global $wp_json_server;
-
-		$this->wp_json_server = $wp_json_server;
-
+	public function __construct( $config ) {
+		$this->config = $config;
 	}
 
 	/**
-	 * Automatically register the routes for this endpoint
-	 *
-	 * @todo all routes
+	 * Register the routes for this endpoint
 	 *
 	 * @since 0.0.1
 	 */
 	public function register_routes() {
-		$pods = pods_api()->load_pods( array( 'key_names' => true ) );
-		foreach ( $pods as $pod => $data  ) {
-			$url = trailingslashit( $this->route_url ) . $pod;
-			register_json_route( PODS_REST_API_BASE_URL, $url,
-				array(
-					array(
-						'methods'             => \WP_JSON_Server::READABLE,
-						'callback'            => array( $this, 'get_items' ),
-						'args'                => array(
-							'context' => array(
-								'default' => 'view',
-							),
-							'type'    => array(),
-							'page'    => array(),
-						),
-						'permission_callback' => array( $this, 'permissions_check' ),
-					),
-
-				)
-
-			);
-			$url = trailingslashit( $this->route_url ) . $pod . '/(?P<id>[\d]+)';
-			register_json_route(  PODS_REST_API_BASE_URL, $url,
-				array(
-					'methods'         => \WP_JSON_Server::READABLE,
-					'callback'        => array( $this, 'get_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'            => array(
-						'context'          => array(
-							'default'      => 'view',
-						),
-					),
-				)
-			);
-		}
-
+		_doing_it_wrong( 'WP_REST_Controller::register_routes', __( 'The register_routes() method must be overriden' ), 'WPAPI-2.0' );
 	}
 
 
@@ -101,12 +59,12 @@ abstract class request_controller {
 	 * @return object
 	 */
 	public function error( $message, $data = array(), $return_partial = true ) {
-		$error = new stdClass();
-		$error->code = 500;
+		$error          = new stdClass();
+		$error->code    = 500;
 		$error->message = $message;
 		if ( $return_partial ) {
 			$error->data = $data;
-		}else{
+		} else {
 			$error->data = $message;
 		}
 

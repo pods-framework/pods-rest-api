@@ -10,7 +10,7 @@
  */
 namespace pods_rest_api\infrastructure;
 
-class response_controller extends \WP_JSON_Response {
+class response_controller extends \WP_REST_Response {
 	/**
 	 * Pod from result set
 	 *
@@ -42,7 +42,7 @@ class response_controller extends \WP_JSON_Response {
 		$this->header( 'X-WP-Total', $this->pod->total_found() );
 		$this->header( 'X-WP-TotalPages', $max_page );
 
-		do_action( 'json_query_navigation_headers', $this, $this->pod );
+		do_action( 'rest_query_navigation_headers', $this, $this->pod );
 	}
 
 }
