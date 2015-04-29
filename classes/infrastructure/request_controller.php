@@ -9,7 +9,7 @@
 
 namespace pods_rest_api\infrastructure;
 
-abstract class request_controller {
+abstract class request_controller extends \WP_REST_Controller {
 
 	/**
 	 * URL for this route
@@ -35,16 +35,6 @@ abstract class request_controller {
 	}
 
 	/**
-	 * Register the routes for this endpoint
-	 *
-	 * @since 0.0.1
-	 */
-	public function register_routes() {
-		_doing_it_wrong( 'WP_REST_Controller::register_routes', __( 'The register_routes() method must be overriden' ), 'WPAPI-2.0' );
-	}
-
-
-	/**
 	 * Placeholder method!
 	 *
 	 * @return bool
@@ -59,7 +49,7 @@ abstract class request_controller {
 	 * @return object
 	 */
 	public function error( $message, $data = array(), $return_partial = true ) {
-		$error          = new stdClass();
+		$error          = new \stdClass();
 		$error->code    = 500;
 		$error->message = $message;
 		if ( $return_partial ) {
@@ -67,7 +57,6 @@ abstract class request_controller {
 		} else {
 			$error->data = $message;
 		}
-
 
 		return $error;
 	}
