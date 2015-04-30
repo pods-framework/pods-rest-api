@@ -78,5 +78,29 @@ class main {
 		}
 
 	}
+	/**
+	 * Ensure a REST response is a response object.
+	 *
+	 * This ensures that the response is consistent, and implements
+	 * {@see WP_HTTP_ResponseInterface}, allowing usage of
+	 * `set_status`/`header`/etc without needing to double-check the object. Will
+	 * also allow {@see WP_Error} to indicate error responses, so users should
+	 * immediately check for this value.
+	 *
+	 * @param WP_Error|WP_HTTP_ResponseInterface|mixed $response Response to check.
+	 * @return mixed WP_Error if present, WP_HTTP_ResponseInterface if instance,
+	 *               otherwise WP_REST_Response.
+	 */
+	static function pods_rest_api_ensure_response( $response ) {
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( $response instanceof \WP_HTTP_ResponseInterface ) {
+			return $response;
+		}
+
+		return new infrastructure\response_controller( $response );
+	}
 
 }

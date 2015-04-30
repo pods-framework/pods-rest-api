@@ -36,7 +36,10 @@ class response_controller extends \WP_REST_Response {
 	 * @param \WP_Query|Object $query Not used. Included for sake of strict standardss
 	 *
 	 */
-	public function query_navigation_headers( $query ) {
+	public function query_navigation_headers( $pod ) {
+
+		self::set_pod($pod);
+
 		$max_page = ceil( $this->pod->total_found() / $this->pod->limit );
 
 		$this->header( 'X-WP-Total', $this->pod->total_found() );
