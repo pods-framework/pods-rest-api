@@ -14,9 +14,9 @@ abstract class request_controller extends \WP_REST_Controller {
 	/**
 	 * URL for this route
 	 *
-	 * NOTE: Relative to root URL for WordPress' REST API
+	 * NOTE: Configuration Object
 	 *
-	 * @since 0.0.1
+	 * @since 0.0.2
 	 *
 	 * @access protected
 	 */
@@ -26,9 +26,9 @@ abstract class request_controller extends \WP_REST_Controller {
 	/**
 	 * Constructor for parent class.
 	 *
-	 * @param string $route Route name
+	 * @param array $config
 	 *
-	 * @since 0.0.1
+	 * @since 0.0.2
 	 */
 	public function __construct( $config ) {
 		$this->config = $config;

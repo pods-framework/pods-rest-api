@@ -12,6 +12,18 @@ use pods_rest_api\infrastructure\request_controller;
 
 class pods extends request_controller {
 
+
+	/**
+	 * @var
+	 */
+	protected $pod_object;
+
+	function __construct( $config ) {
+		parent::__construct($config);
+		$this->pod_object = pods( $this->config['name'] );
+	}
+
+
 	/**
 	 * Register routes and endpoints
 	 *
@@ -116,6 +128,7 @@ class pods extends request_controller {
 
 		$args = (array) $request->get_params();
 		$args = pods_sanitize( $args );
+
 		/**
 		 * Alter the query arguments for a request.
 		 *
@@ -123,22 +136,26 @@ class pods extends request_controller {
 		 * collection request.
 		 *
 		 * @param array $args Map of query var to query value.
-		 * @param WP_JSON_Request $request Full details about the request.
+		 * @param \WP_REST_Request $request Full details about the request.
 		 */
 		$args = apply_filters( 'rest_pods_query', $args, $request );
+
 		// $query_args = $this->prepare_items_query( $args );
 		$params = array(
 			'depth' => $args['depth'],
 		);
 
-		$pod = pods( $this->config['name'], $args );
+		$this->pod_object->find( $args );
 
-		$items               = $pod->export_data( $params );
+		$items = $this->pod_object->export_data( $params );
+
+		// Debugging Output
 		$items['query_args'] = $args;
 		$items['pod']        = $this->config['name'];
 
+		// Assemble response
 		$response = \pods_rest_api\main::pods_rest_api_ensure_response( $items );
-		$response->query_navigation_headers( $pod );
+		$response->query_navigation_headers( $this->pod_object );
 
 		return $response;
 
