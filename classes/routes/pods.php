@@ -14,13 +14,13 @@ class pods extends request_controller {
 
 
 	/**
-	 * @var
+	 * @var \Pods $pod_object
 	 */
 	protected $pod_object;
 
 	function __construct( $config ) {
 		parent::__construct($config);
-		$this->pod_object = pods( $this->config['name'] );
+		$this->pod_object = pods( $this->config['pod_name'] );
 	}
 
 
@@ -151,7 +151,7 @@ class pods extends request_controller {
 
 		// Debugging Output
 		$items['query_args'] = $args;
-		$items['pod']        = $this->config['name'];
+		$items['pod_name']        = $this->config['pod_name'];
 
 		// Assemble response
 		$response = \pods_rest_api\main::pods_rest_api_ensure_response( $items );
