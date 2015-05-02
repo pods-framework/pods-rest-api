@@ -10,12 +10,12 @@
  */
 namespace pods_rest_api\infrastructure;
 
-class response_controller extends \WP_REST_Response {
+class rest_response extends \WP_REST_Response {
 
 	/**
 	 * Send navigation-related headers with Pods responses
 	 *
-	 * @param \Pods|Object $pod_object Not used. Included for sake of strict standardss
+	 * @param \Pods|Object $pod_object Not used. Included for sake of strict standards
 	 *
 	 */
 	public function query_navigation_headers( $pod_object ) {

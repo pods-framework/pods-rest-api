@@ -122,10 +122,10 @@ class main {
 	 * also allow {@see WP_Error} to indicate error responses, so users should
 	 * immediately check for this value.
 	 *
-	 * @param WP_Error|WP_HTTP_ResponseInterface|mixed $response Response to check.
+	 * @param \WP_Error|\WP_HTTP_ResponseInterface|mixed $response Response to check.
 	 *
 	 * @return mixed WP_Error if present, WP_HTTP_ResponseInterface if instance,
-	 *               otherwise WP_REST_Response.
+	 *               otherwise pods_rest_api\infrastructure\rest_response.
 	 */
 	static function pods_rest_api_ensure_response( $response ) {
 		if ( is_wp_error( $response ) ) {
@@ -136,7 +136,7 @@ class main {
 			return $response;
 		}
 
-		return new infrastructure\response_controller( $response );
+		return new infrastructure\rest_response( $response );
 	}
 
 }
