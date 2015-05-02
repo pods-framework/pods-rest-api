@@ -48,14 +48,14 @@ class main {
 			/**
 			 * Register default REST API routes
 			 */
-			self::set_routes_config( PODS_REST_API_NAMESPACE_URL, $pod_names, '\pods_rest_api\routes\pods' );
-			self::set_routes_config( PODS_REST_API_NAMESPACE_URL . '-api', $pod_names, '\pods_rest_api\routes\pods_api' );
+			$this->set_routes_config( PODS_REST_API_NAMESPACE_URL, $pod_names, '\pods_rest_api\routes\pods' );
+			$this->set_routes_config( PODS_REST_API_NAMESPACE_URL . '-api', $pod_names, '\pods_rest_api\routes\pods_api' );
 		}
 
 		$routes_config = apply_filters( 'pods_rest_api_register_routes', $this->routes_config );
 
 		if ( ! empty( $routes_config ) ) {
-			self::register_routes( $routes_config );
+			$this->register_routes( $routes_config );
 		}
 	}
 
