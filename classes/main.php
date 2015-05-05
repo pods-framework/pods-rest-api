@@ -106,6 +106,7 @@ class main {
 				if ( ! is_subclass_of( $controller, 'pods_rest_api\infrastructure\request_controller' ) ) {
 					continue;
 				}
+
 				$controller->register_routes();
 			}
 		}

@@ -30,6 +30,38 @@ class request_params {
 		'smallereq'		=>	'<=',
 		'contains'		=>	'LIKE',
 	);
+	/**
+	 * @todo assemble all arguments for pods()->find() including check for allowed args
+	 *
+	 * @param array $args from $request->get_params()
+	 *
+	 * @return mixed
+	 */
+	public static function prepare_find_args( $args, $pod ) {
+
+		$args = apply_filters( 'pods_rest_api_find_args', $args, $pod);
+
+		return $args;
+	}
+
+	/**
+	 * @todo assemble all fields for $pods->export_data including check fo allowed fields
+	 *
+	 * @param array $args from $request->get_params()
+	 *
+	 * @return mixed
+	 */
+	public static function prepare_export_args( $args, $pod ) {
+
+		$export_args = array(
+			'depth' => $args['depth'],
+			'fields' => $args['fields'],
+		);
+
+		$export_args = apply_filters( 'pods_rest_api_export_args', $export_args, $args, $pod);
+
+		return $export_args;
+	}
 
 	/**
 	 * Build params array from request data.
@@ -172,7 +204,7 @@ class request_params {
 		}
 
 		return $params;
-		
+
 	}
 
 	/**

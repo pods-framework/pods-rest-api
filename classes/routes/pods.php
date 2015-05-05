@@ -9,6 +9,7 @@
 namespace pods_rest_api\routes;
 
 use pods_rest_api\infrastructure\request_controller;
+use pods_rest_api\infrastructure\request_params;
 
 class pods extends request_controller {
 
@@ -40,41 +41,12 @@ class pods extends request_controller {
 						'context'    => array(
 							'default' => 'view',
 						),
-						'where'      => array(
-							'sanitize_callback' => '__return_false'
-						),
-						'order'      => array(
-							'default'           => 'DESC',
-							'sanitize_callback' => 'sanitize_key'
-						),
-						'orderby'    => array(
-							'default'           => 'id',
-							'sanitize_callback' => 'sanitize_key'
-						),
-						'limit'      => array(
-							'default'           => 15,
-							'sanitize_callback' => 'absint',
-							'validate_callback' => '__return_true',
-						),
-						'groupby'    => array(
-							'sanitize_callback' => ''
-						),
-						'pagination' => array(
-							'sanitize_callback' => '__return_false'
-						),
-						'page'       => array(
-							'sanitize_callback' => '__return_false'
-						),
-						'cache'      => array(
-							'sanitize_callback' => '__return_false'
-						),
 						'depth'      => array(
 							'default'           => 2,
-							'sanitize_callback' => 'absint'
+							'sanitize_callback' => 'absint',
 						),
 						'fields'     => array(
 							'default'           => '',
-							'sanitize_callback' => '__return_false',
 						),
 					)
 				),
@@ -123,6 +95,7 @@ class pods extends request_controller {
 	 * @param \WP_REST_Request $request Full data about the request.
 	 *
 	 * @return mixed WP_Error or \pods_rest_api\infrastructure\response_controller
+	 * @use
 	 */
 	public function get_items( $request ) {
 
@@ -135,23 +108,22 @@ class pods extends request_controller {
 		 * This allows you to set extra arguments or defaults for a post
 		 * collection request.
 		 *
+		 * @uses request_params
+		 *
 		 * @param array $args Map of query var to query value.
 		 * @param \WP_REST_Request $request Full details about the request.
 		 */
-		$args = apply_filters( 'rest_pods_query', $args, $request );
+		$args = apply_filters( 'rest_pods_args', $args, $request );
 
-		// $query_args = $this->prepare_items_query( $args );
-		$params = array(
-			'depth' => $args['depth'],
-		);
+		$find_args = request_params::prepare_find_args($args, $this->pod_object );
+		$export_args = request_params::prepare_export_args($args, $this->pod_object );
 
-		$this->pod_object->find( $args );
-
-		$items = $this->pod_object->export_data( $params );
+		$this->pod_object->find( $find_args );
+		$items = $this->pod_object->export_data( $export_args );
 
 		// Debugging Output
 		$items['query_args'] = $args;
-		$items['pod_name']        = $this->config['pod_name'];
+		$items['pod_name']   = $this->config['pod_name'];
 
 		// Assemble response
 		$response = \pods_rest_api\main::pods_rest_api_ensure_response( $items );
