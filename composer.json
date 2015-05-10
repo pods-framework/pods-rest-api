@@ -1,0 +1,15 @@
+{
+  "name": "pods-framework/pods-rest-api",
+  "description": "Add-on for the WordPress REST API",
+  "license": "GPL-2.0+",
+  "type"       : "wordpress-plugin",
+  "homepage"   : "http://pods.io//",
+  "authors": [
+    {
+      "name": "Josh Pollock"
+    }
+  ],
+  "require"    : {
+    "composer/installers": "~1.0"
+  }
+}
