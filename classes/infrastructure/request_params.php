@@ -30,22 +30,10 @@ class request_params {
 		'smallereq'		=>	'<=',
 		'contains'		=>	'LIKE',
 	);
-	/**
-	 * @todo assemble all arguments for pods()->find() including check for allowed args
-	 *
-	 * @param array $args from $request->get_params()
-	 *
-	 * @return mixed
-	 */
-	public static function prepare_find_args( $args, $pod ) {
 
-		$args = apply_filters( 'pods_rest_api_find_args', $args, $pod);
-
-		return $args;
-	}
 
 	/**
-	 * @todo assemble all fields for $pods->export_data including check fo allowed fields
+	 * @todo assemble all fields for $pods->export_data including check of allowed fields
 	 *
 	 * @param array $args from $request->get_params()
 	 *
@@ -54,8 +42,8 @@ class request_params {
 	public static function prepare_export_args( $args, $pod ) {
 
 		$export_args = array(
-			'depth' => $args['depth'],
-			'fields' => $args['fields'],
+			'depth' => pods_v( 'depth', $args ),
+			'fields' => pods_v( 'fields', $args )
 		);
 
 		$export_args = apply_filters( 'pods_rest_api_export_args', $export_args, $args, $pod);
@@ -70,11 +58,11 @@ class request_params {
 	 *
 	 * @param array $data Request data.
 	 * @param string $pod_name Name of Pod
-	 * @param string $method Transfer method being used.
+	 * @param \WP_REST_Request $request Full details about the request.
 	 *
 	 * @return array|int
 	 */
-	public static function build_params( $data, $pod_name, $method ) {
+	public static function build_params( $data, $pod_name, $request ) {
 		$params = array();
 		if ( ! isset( $data['id'] ) ) {
 			$params = self::page( $data, $params );
@@ -83,14 +71,21 @@ class request_params {
 			$params = self::orderby( $data, $params );
 			$params = array( $params );
 
-
 		} else {
 			$params = absint( $data['id'] );
 
 		}
 
-		//@todo a filter here for adding additional query
-		//will use $pod_name & $method
+		/**
+		 * Filter request parameters for Pods::find()
+		 *
+		 * @since 0.0.2
+		 *
+		 * @param array $params The params array
+		 * @param string $pod_name Name of Pod
+		 * @param \WP_REST_Request $request Full details about the request.
+		 */
+		$params = apply_filters( 'pods_rest_api_params', $params, $pod_name, $request );
 		return $params;
 	}
 
@@ -106,20 +101,49 @@ class request_params {
 	 */
 	public static function where( $data, $params = array() ) {
 
-		if ( ! is_null( $where = pods_v_sanitized( 'where', $data ) ) ) {
-			$_where = array(
-				'key'     => pods_v( 'key', $where ),
-				'value'   => pods_v( 'value', $where ),
-				'compare' => pods_v( 'compare', $where )
-			);
+		if ( ! is_null( $where = pods_v( 'where', $data ) ) ) {
+			if ( isset( $where[ 'relation' ] ) ) {
+				$keys = pods_v( 'key', $where, array() );
+				$values = pods_v( 'value', $where, array() );
+				$comparisons = pods_v( 'compare', $where, array() );
+				if( count( $keys ) == count( $values ) && count( $keys ) == count( $comparisons ) ) {
 
-			$_where['compare'] = self::comparison_translate( $_where['compare'] );
+					for ( $i = 0; $i < count( $keys ); $i++ ) {
+						$_where[] = array(
+							'key' => $keys[ $i ],
+							'value' => $values[ $i ],
+							'compare' =>  self::comparison_translate( $comparisons[ $i ] )
+						);
+					}
+					$where = array(
+						'relation' => $where[ 'relation' ],
+						$_where
+					);
 
-			if ( array_filter( $_where ) ) {
-				$params['where'] = $_where;
+					$params[ 'where' ] = $where;
 
-				return $params;
+
+				}else{
+					//@todo ??
+				}
+
+			}else{
+				$_where = array(
+					'key'     => pods_v( 'key', $where ),
+					'value'   => pods_v( 'value', $where ),
+					'compare' => pods_v( 'compare', $where, '=' )
+				);
+
+				$_where['compare'] = self::comparison_translate( $_where['compare'] );
+				if ( array_filter( $_where ) ) {
+					$params['where'] = $_where;
+
+					return $params;
+				}
+
 			}
+
+
 
 			return $params;
 

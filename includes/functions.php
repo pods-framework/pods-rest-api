@@ -8,7 +8,7 @@
  */
 function pods_rest_api_response( $pod, $data = null, $status = 200, $headers = array() ) {
 	$response = new \pods_rest_api\infrastructure\rest_response( $data, $status, $headers );
-	$response->set_pod( $pod );
+	$response->set_pods_object( $pod );
 
 	return $response;
 }
