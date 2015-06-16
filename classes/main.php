@@ -124,11 +124,13 @@ class main {
 	 * immediately check for this value.
 	 *
 	 * @param \WP_Error|\WP_HTTP_ResponseInterface|mixed $response Response to check.
+	 * @param integer $status HTTP status code
+	 * @param array $headers HTTP header map
 	 *
 	 * @return mixed WP_Error if present, WP_HTTP_ResponseInterface if instance,
 	 *               otherwise pods_rest_api\infrastructure\rest_response.
 	 */
-	static function pods_rest_api_ensure_response( $response ) {
+	static function pods_rest_api_ensure_response( $response, $status = 200, $headers = array() ) {
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
@@ -137,7 +139,7 @@ class main {
 			return $response;
 		}
 
-		return new infrastructure\rest_response( $response );
+		return new infrastructure\rest_response( $response, $status, $headers );
 	}
 
 }
