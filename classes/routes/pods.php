@@ -39,7 +39,7 @@ class pods extends request_controller {
 				array(
 					'methods'             => \WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_items' ),
-					'permission_callback' => array( $this, 'get_item_permissions_check' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => array(
 						'context' => array(
 							'default' => 'view',

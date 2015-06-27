@@ -165,7 +165,7 @@ class pods_api extends request_controller {
 			$data[ 'id' ] = $name;
 		}
 		else {
-			$par$dataams[ 'name' ] = $name;
+			$data[ 'name' ] = $name;
 		}
 
 		$pod = $api->load_pod( $data );

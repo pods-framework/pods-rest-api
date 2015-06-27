@@ -16,20 +16,24 @@ class request_params {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @var array
+	 * @return array
 	 */
-	public static $comparisons = array(
-		'equals'        => '=',
-		'is'			=>	'=',
-		'isnot'			=>	'!=',
-		'isin'			=>	'IN',
-		'isnotin'		=>	'NOT IN',
-		'greater'		=>	'>',
-		'smaller'		=>	'<',
-		'greatereq'		=>	'>=',
-		'smallereq'		=>	'<=',
-		'contains'		=>	'LIKE',
-	);
+	public static function comparisons() {
+		return array(
+			'equals'        =>  '=',
+			'is'			=>	'=',
+			'isnot'			=>	'!=',
+			'isin'			=>	'IN',
+			'isnotin'		=>	'NOT IN',
+			'greater'		=>	'>',
+			'smaller'		=>	'<',
+			'greatereq'		=>	'>=',
+			'smallereq'		=>	'<=',
+			'contains'		=>	'LIKE',
+			'and'           => 'AND',
+			'or'            => 'OR'
+		);
+	}
 
 
 	/**
@@ -69,7 +73,6 @@ class request_params {
 			$params = self::limit( $data, $params );
 			$params = self::where( $data, $params );
 			$params = self::orderby( $data, $params );
-			$params = array( $params );
 
 		} else {
 			$params = absint( $data['id'] );
@@ -102,41 +105,57 @@ class request_params {
 	public static function where( $data, $params = array() ) {
 
 		if ( ! is_null( $where = pods_v( 'where', $data ) ) ) {
-			if ( isset( $where[ 'relation' ] ) ) {
+			if ( 1 < count( $data[ 'where' ][ 'key' ] ) || 1 < count( $data[ 'where' ][ 'value' ] ) ) {
 				$keys = pods_v( 'key', $where, array() );
 				$values = pods_v( 'value', $where, array() );
 				$comparisons = pods_v( 'compare', $where, array() );
-				if( count( $keys ) == count( $values ) && count( $keys ) == count( $comparisons ) ) {
+				if( count( $keys ) == count( $values ) ) {
 
 					for ( $i = 0; $i < count( $keys ); $i++ ) {
+						if ( isset(  $comparisons[ $i ] ) ) {
+							$_compare = self::comparison_translate( $comparisons[ $i ] );
+						}else{
+							$_compare = 'AND';
+						}
+
 						$_where[] = array(
 							'key' => $keys[ $i ],
 							'value' => $values[ $i ],
-							'compare' =>  self::comparison_translate( $comparisons[ $i ] )
+							'compare' => $_compare
 						);
+
 					}
 					$where = array(
-						'relation' => $where[ 'relation' ],
-						$_where
+						'relation' => self::comparison_translate( $where[ 'relation' ], 'AND' ),
 					);
+
+					foreach( $_where as $w ) {
+						$where[] = $w;
+					}
 
 					$params[ 'where' ] = $where;
 
 
 				}else{
-					//@todo ??
+					//@todo make an error here!
 				}
 
 			}else{
 				$_where = array(
 					'key'     => pods_v( 'key', $where ),
 					'value'   => pods_v( 'value', $where ),
-					'compare' => pods_v( 'compare', $where, '=' )
+					'compare' => pods_v( 'compare', $where, 'equals' ),
 				);
 
 				$_where['compare'] = self::comparison_translate( $_where['compare'] );
 				if ( array_filter( $_where ) ) {
-					$params['where'] = $_where;
+					$relation =  pods_v( 'relation', $where, 'and' );
+
+					$params['where'] = array(
+						'relation' => self::comparison_translate( $relation, 'AND' ),
+						$_where
+					);
+
 
 					return $params;
 				}
@@ -237,13 +256,22 @@ class request_params {
 	 * @since 0.0.1
 	 *
 	 * @param string $comparison Comparison, must be in self::$comparisons
+	 * @param string $default Optional. Default to return if validation fails.
 	 *
-	 * @return string|void The operator if input was legal.
+	 * @return string The operator, if input was legal, if not return $default
 	 */
-	public static function comparison_translate( $comparison ) {
+	public static function comparison_translate( $comparison, $default = '=' ) {
+		if ( is_null( $comparison ) ) {
+			return $default;
+		}
+
 		$comparison = strtolower( $comparison );
-		if ( array_key_exists( $comparison, self::$comparisons ) ) {
-			return self::$comparisons[ $comparison ];
+		$comparisons = self::comparisons();
+		if ( array_key_exists( $comparison, $comparisons ) ) {
+			$comparison = $comparisons[ $comparison ];
+			return $comparison;
+		}else{
+			return $default;
 		}
 
 	}
