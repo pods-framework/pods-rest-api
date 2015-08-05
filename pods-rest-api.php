@@ -45,6 +45,17 @@ define( 'PODS_REST_API_VERSION', '0.0.2-a1' );
 define( 'PODS_REST_API_MIN_PODS_VERSION', '2.5.1.2' );
 define( 'PODS_REST_API_MIN_WP_REST_VERSION', '2.0-alpha' );
 
+if ( ! defined( 'PODS_REST_API_EXTEND_CORE' ) ) {
+	/**
+	 * Extend default routes for post type and user Pods
+	 *
+	 * Set as false in wp-config or anywhere before plugins_loaded to disable extending core routes for Pods.
+	 *
+	 * @since 0.0.3
+	 */
+	define( 'PODS_REST_API_EXTEND_CORE', true );
+}
+
 if ( ! defined( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES' ) ) {
 	/**
 	 * Enable default routes
@@ -53,7 +64,7 @@ if ( ! defined( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES' ) ) {
 	 *
 	 * @since 0.0.1
 	 */
-	define( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES', true );
+	define( 'PODS_REST_API_ENABLE_DEFAULT_ROUTES', false );
 }
 
 if ( ! defined( 'PODS_REST_API_NAMESPACE_URL' ) ) {

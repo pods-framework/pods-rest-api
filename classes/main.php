@@ -8,6 +8,7 @@
  */
 namespace pods_rest_api;
 
+use pods_rest_api\extend\add_fields;
 use pods_rest_api\routes\pods;
 use pods_rest_api\routes\pods_api;
 
@@ -28,6 +29,7 @@ class main {
 	public function __construct() {
 		do_action( 'pods_rest_api_init', $this );
 		add_action( 'rest_api_init', array( $this, 'pods_routes' ) );
+
 	}
 
 	/**
@@ -39,9 +41,9 @@ class main {
 	 * @since 0.0.1
 	 */
 	public function pods_routes() {
-		if ( PODS_REST_API_ENABLE_DEFAULT_ROUTES ) {
+		$pod_names = array_keys( pods_api()->load_pods( array( 'names' => true ) ) );
 
-			$pod_names = array_keys( pods_api()->load_pods( array( 'names' => true ) ) );
+		if ( PODS_REST_API_ENABLE_DEFAULT_ROUTES ) {
 
 			// maybe if ( $config['type'] )  use different controller for pod, post-type, ....
 
@@ -50,6 +52,11 @@ class main {
 			 */
 			$this->set_routes_config( PODS_REST_API_NAMESPACE_URL, $pod_names, '\pods_rest_api\routes\pods' );
 			$this->set_routes_config( PODS_REST_API_NAMESPACE_URL . '-api', $pod_names, '\pods_rest_api\routes\pods_api' );
+
+		}
+
+		if( PODS_REST_API_EXTEND_CORE ) {
+			$this->extend_core( $pod_names );
 		}
 
 		$routes_config = apply_filters( 'pods_rest_api_register_routes', $this->routes_config );
@@ -57,6 +64,24 @@ class main {
 		if ( ! empty( $routes_config ) ) {
 			$this->register_routes( $routes_config );
 		}
+	}
+
+	/**
+	 * Extend core endpoints if desired by settings.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array $pod_names
+	 */
+	public function extend_core( $pod_names ) {
+		foreach( $pod_names as $pod ) {
+			$pod = pods( $pod, null, true );
+			if ( $pod && pods_rest_api_pod_extends_core_route( $pod ) ) {
+				new add_fields( $pod );
+			}
+
+		}
+
 	}
 
 	/**
