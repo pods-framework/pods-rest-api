@@ -42,8 +42,10 @@ class add_fields {
 			if( in_array( $type, array(
 						'post_type',
 						'user',
+						'taxonomy'
 					)
-				) ) {
+				)
+			) {
 				$this->pod = $pod;
 			}else{
 				$this->pod = false;
@@ -66,7 +68,7 @@ class add_fields {
 		$args = array();
 		switch ( $read ){
 			case true == $read :
-				$args[ 'get_callback' ] = array( "\\pods_rest_api\\extend\\handlers\\", 'get_handler' );
+				$args[ 'get_callback' ] = array( "\\pods_rest_api\\extend\\handlers", 'get_handler' );
 				break;
 			case is_callable( $read ) :
 				$args[ 'get_callback' ] = $read;
@@ -76,7 +78,7 @@ class add_fields {
 
 		switch ( $write ){
 			case true == $write :
-				$args[ 'update_callback' ] = array( "\\pods_rest_api\\extend\\handlers\\", 'write_handler' );
+				$args[ 'update_callback' ] = array( "\\pods_rest_api\\extend\\handlers", 'write_handler' );
 				break;
 			case is_callable( $write ) :
 				$args[ 'update_callback' ] = $write;

@@ -9,6 +9,7 @@
 namespace pods_rest_api;
 
 use pods_rest_api\extend\add_fields;
+use pods_rest_api\extend\add_rest_support;
 use pods_rest_api\routes\pods;
 use pods_rest_api\routes\pods_api;
 
@@ -29,6 +30,7 @@ class main {
 	public function __construct() {
 		do_action( 'pods_rest_api_init', $this );
 		add_action( 'rest_api_init', array( $this, 'pods_routes' ) );
+		add_action( 'init', array( $this, 'add_rest_support' ), 25 );
 
 	}
 
@@ -80,6 +82,48 @@ class main {
 				new add_fields( $pod );
 			}
 
+		}
+
+	}
+
+	/**
+	 * Add REST API support to post type and taxonomy objects.
+	 *
+	 * @todo Inegrate with Pods core post/taxonomy registration.
+	 *
+	 * @since 0.1.0
+	 */
+	public function add_rest_support() {
+		$pods = pods_api()->load_pods();
+
+
+		if ( ! empty( $pods ) && is_array( $pods ) ) {
+
+			foreach ( $pods as $pod ) {
+				$type = $pod[ 'type'];
+				if( in_array( $type, array(
+							'post_type',
+							'taxonomy'
+						)
+					)
+				) {
+					if ( $pod && pods_rest_api_pod_extends_core_route( $pod ) ) {
+						if ( 'post_type' == $type ) {
+							add_rest_support::post_type_rest_support( $pod[ 'name' ] );
+						}
+
+						if ( 'taxonomy' == $type ) {
+							add_rest_support::taxonomy_rest_support( $pod[ 'name' ] );
+						}
+
+					}
+
+				}
+
+
+
+
+			}
 		}
 
 	}

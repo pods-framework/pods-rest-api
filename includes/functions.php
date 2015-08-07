@@ -24,6 +24,7 @@ function pods_rest_api_response( $pod, $data = null, $status = 200, $headers = a
  * @return bool If supports, true, else false.
  */
 function pods_rest_api_field_allowed_to_extend( $field_name, $pod, $read = true ) {
+	return true;
 	if ( is_object( $pod ) ) {
 		$fields = $pod->fields();
 		if ( array_key_exists( $field_name, $fields[ $field_name ] ) ) {
@@ -51,6 +52,7 @@ function pods_rest_api_field_allowed_to_extend( $field_name, $pod, $read = true 
  * @return bool
  */
 function pods_rest_api_pod_extends_core_route( $pod ) {
+	return true;
 	if ( is_object( $pod ) ) {
 		// @todo test support
 		return true;
