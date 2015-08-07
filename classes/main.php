@@ -12,6 +12,7 @@ use pods_rest_api\extend\add_fields;
 use pods_rest_api\extend\add_rest_support;
 use pods_rest_api\routes\pods;
 use pods_rest_api\routes\pods_api;
+use pods_rest_api\ui\admin;
 
 class main {
 
@@ -31,6 +32,10 @@ class main {
 		do_action( 'pods_rest_api_init', $this );
 		add_action( 'rest_api_init', array( $this, 'pods_routes' ) );
 		add_action( 'init', array( $this, 'add_rest_support' ), 25 );
+
+		if ( is_admin() ) {
+			new admin();
+		}
 
 	}
 
