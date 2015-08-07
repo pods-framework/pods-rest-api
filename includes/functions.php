@@ -17,6 +17,8 @@ function pods_rest_api_response( $pod, $data = null, $status = 200, $headers = a
 /**
  * Check if a field supports read or write via the REST API.
  *
+ * @since 0.1.0
+ *
  * @param string $field_name The field name.
  * @param \Pods $pod Pods object.
  * @param bool|true $read Are we checking read or write?
@@ -24,20 +26,43 @@ function pods_rest_api_response( $pod, $data = null, $status = 200, $headers = a
  * @return bool If supports, true, else false.
  */
 function pods_rest_api_field_allowed_to_extend( $field_name, $pod, $read = true ) {
-	return true;
 	if ( is_object( $pod ) ) {
 		$fields = $pod->fields();
-		if ( array_key_exists( $field_name, $fields[ $field_name ] ) ) {
+		if ( array_key_exists( $field_name, $fields ) ) {
+			$pod_options = $pod->pod_data[ 'options' ];
 			if ( $read ) {
-				// @todo test support
-				return true;
+				if ( pods_v( 'read_all', $pod_options, false ) ) {
+					return true;
+
+				}
+
 			} else {
-				// @todo test support
-				return true;
+				if ( pods_v( 'write_all', $pod_options, false ) ) {
+					return true;
+
+				}
+
 			}
+
+			$field = pods_v( $field_name, $fields, false );
+			if ( $field && $read ) {
+				if ( 1 == (int) $pod->fields( $field_name, 'rest_read' ) ) {
+					return true;
+
+				}
+
+			} else {
+				if ( 1 == (int) $pod->fields( $field_name, 'rest_write' ) ) {
+					return true;
+
+				}
+
+			}
+
 		}
 
 		return false;
+
 	}
 
 }
@@ -45,19 +70,22 @@ function pods_rest_api_field_allowed_to_extend( $field_name, $pod, $read = true 
 /**
  * Check if a Pod supports REST extend core.
  *
- * @todo maybe should return the rest_base arg.
+ * @since 0.1.0
  *
- * @param $pod
+ * @param array||Pods $pod Pod object or the pod_data array
  *
  * @return bool
  */
 function pods_rest_api_pod_extends_core_route( $pod ) {
-	return true;
+	$enabled = false;
 	if ( is_object( $pod ) ) {
-		// @todo test support
-		return true;
+		$pod = $pod->pod_data;
 	}
 
-	return false;
+	if ( is_array( $pod ) ) {
+		$enabled = pods_v( 'rest_enable', $pod[ 'options' ], false );
+	}
+
+	return $enabled;
 
 }

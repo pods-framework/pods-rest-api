@@ -111,14 +111,14 @@ class admin {
 		if( $this->good_pod( $pod ) ) {
 			$options[ 'advanced' ][ __( 'Rest API', 'pods-rest-api' ) ] =
 				array(
-					'read' => array(
+					'rest_read' => array(
 						'name' => 'read',
 						'label' => __( 'Read via REST API?', 'pods-rest-api' ),
 						'help' => __( 'Should this field be readable via the REST API? You must enable REST API support for this Pod.', 'pods-rest-api' ),
 						'type' => 'boolean',
 						'default' => '',
 					),
-					'write' => array(
+					'rest_write' => array(
 						'name' => 'write',
 						'label' => __( 'Write via REST API?', 'pods-rest-api' ),
 						'help' => __( 'Should this field be readable via the REST API? You must enable REST API support for this Pod.', 'pods-rest-api' ),
@@ -159,5 +159,5 @@ class admin {
 		}
 
 	}
-	
+
 }

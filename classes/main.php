@@ -114,11 +114,11 @@ class main {
 				) {
 					if ( $pod && pods_rest_api_pod_extends_core_route( $pod ) ) {
 						if ( 'post_type' == $type ) {
-							add_rest_support::post_type_rest_support( $pod[ 'name' ] );
+							add_rest_support::post_type_rest_support( $pod[ 'name' ], sanitize_title( pods_v( 'rest_base', $pod['options'], $pod['name'] ) ) );
 						}
 
 						if ( 'taxonomy' == $type ) {
-							add_rest_support::taxonomy_rest_support( $pod[ 'name' ] );
+							add_rest_support::taxonomy_rest_support( $pod[ 'name' ], sanitize_title( pods_v( 'rest_base', $pod['options'], $pod['name'] ) ) );
 						}
 
 					}
