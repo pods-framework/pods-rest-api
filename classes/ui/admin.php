@@ -112,14 +112,14 @@ class admin {
 			$options[ 'advanced' ][ __( 'Rest API', 'pods-rest-api' ) ] =
 				array(
 					'rest_read' => array(
-						'name' => 'read',
+						'rest_read' => 'read',
 						'label' => __( 'Read via REST API?', 'pods-rest-api' ),
 						'help' => __( 'Should this field be readable via the REST API? You must enable REST API support for this Pod.', 'pods-rest-api' ),
 						'type' => 'boolean',
 						'default' => '',
 					),
 					'rest_write' => array(
-						'name' => 'write',
+						'rest_write' => 'write',
 						'label' => __( 'Write via REST API?', 'pods-rest-api' ),
 						'help' => __( 'Should this field be readable via the REST API? You must enable REST API support for this Pod.', 'pods-rest-api' ),
 						'type' => 'boolean',
